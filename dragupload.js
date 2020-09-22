@@ -316,10 +316,17 @@ async function CreateActorWithType(event, data, tokenImageData, type) {
     data.x -= (td.width * hg);
     data.y -= (td.height * hg);
 
-    // Snap the dropped position and validate that it is in-bounds
-    let tokenData = {x: data.x, y: data.y, hidden: event.altKey, img: tokenImageData.img };
-    if ( !event.shiftKey ) mergeObject(tokenData, canvas.grid.getSnappedPosition(data.x, data.y, 1));
-    if ( !canvas.grid.hitArea.contains(tokenData.x, tokenData.y) ) return false;
+        // Snap the dropped position and validate that it is in-bounds
+        let tokenData = {
+            x: data.x,
+            y: data.y,
+            hidden: event.altKey,
+            img: tokenImageData.img,
+            displayName: CONST.TOKEN_DISPLAY_MODES.ALWAYS,
+            displayBars: CONST.TOKEN_DISPLAY_MODES.NONE,
+        }
+        if ( !event.shiftKey ) mergeObject(tokenData, canvas.grid.getSnappedPosition(data.x, data.y, 1));
+        if ( !canvas.grid.hitArea.contains(tokenData.x, tokenData.y) ) return false;
 
     // Get the Token image
     if ( actorData.token.randomImg ) {
