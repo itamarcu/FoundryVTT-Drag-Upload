@@ -4,12 +4,12 @@ Hooks.once('ready', async function() {
 
     if (game.user.isGM) {
         await createFoldersIfMissing();
-    }   
+    }
 
-    new DragDrop({ 
-        callbacks: { 
+    new DragDrop({
+        callbacks: {
             drop: handleDrop
-        } 
+        }
     })
     .bind($("#board")[0]);
 });
@@ -57,6 +57,18 @@ async function handleDrop(event) {
             canvas._dragDrop.callbacks.drop(event);
             return;
         }
+        // SUPER SPECIAL CASE for xin for the ability to drag images with descriptions and have that be the title
+        let description = null
+        const html = event.dataTransfer.getData("text/html")
+        if (html.startsWith('<div class') && html.endsWith('</div>')) {
+            console.log("DragUpload | Special behavior for dragging imgur image with description");
+            url = html.match(/img src="(.*?\.(webp|png|jpg|gif|bmp))/)[1]
+            // // low-res webp file instead of a PNG
+            // if (url.endsWith("_d.webp")) {
+            //     url = url.substr(0, url.length - "_d.webp".length) + ".png"
+            // }
+            description = html.match(/inherit;">(.*?)<\/span>/)[1]
+        }
         // trimming query string
         if (url.includes("?")) url = url.substr(0, url.indexOf("?"))
         const splitUrl = url.split("/")
@@ -80,6 +92,7 @@ async function handleDrop(event) {
             filename = filename.substr(0, filename.length - "_d.webp".length) + ".png"
             url = url.substr(0, url.length - "_d.webp".length) + ".png"
         }
+        filename = description || filename // again, xin special case
         // must be a valid file URL!
         file = {isExternalUrl: true, url: url, name: filename}
     } else {
@@ -89,7 +102,7 @@ async function handleDrop(event) {
     if (file == undefined) {
         // Let Foundry handle the event instead
         canvas._dragDrop.callbacks.drop(event);
-        return; 
+        return;
     }
     console.log(file);
 
@@ -248,7 +261,7 @@ async function CreateActor(event, file) {
 
       if (types.length > 1) {
         let d = new Dialog({
-            title: "What Type should this Actor be created as?",
+            title: `What Type should this Actor (${file.name}) be created as?`,
             buttons: {},
             default: types[0],
             close: () => {}
@@ -267,8 +280,8 @@ async function CreateActor(event, file) {
       else {
         await CreateActorWithType(event, data, tokenData, types[0]);
       }
-  
-      
+
+
 }
 
 async function CreateActorWithType(event, data, tokenImageData, type) {
@@ -283,11 +296,11 @@ async function CreateActorWithType(event, data, tokenImageData, type) {
     }
 
     const actor = await Actor.create(
-    {
-        name: actorName,
-        type: createdType,
-        img: data.img
-    });
+        {
+            name: actorName,
+            type: createdType,
+            img: data.img
+        });
     const actorData = duplicate(actor.data);
 
     // Prepare Token data specific to this placement
@@ -297,16 +310,16 @@ async function CreateActorWithType(event, data, tokenImageData, type) {
     data.y -= (td.height * hg);
 
     // Snap the dropped position and validate that it is in-bounds
-    let tokenData = { x: data.x, y: data.y, hidden: event.altKey, img: tokenImageData.img };
+    let tokenData = {x: data.x, y: data.y, hidden: event.altKey, img: tokenImageData.img };
     if ( !event.shiftKey ) mergeObject(tokenData, canvas.grid.getSnappedPosition(data.x, data.y, 1));
     if ( !canvas.grid.hitArea.contains(tokenData.x, tokenData.y) ) return false;
 
     // Get the Token image
     if ( actorData.token.randomImg ) {
-        let images = await actor.getTokenImages();
-        images = images.filter(i => (images.length === 1) || !(i === this._lastWildcard));
-        const image = images[Math.floor(Math.random() * images.length)];
-        tokenData.img = this._lastWildcard = image;
+      let images = await actor.getTokenImages();
+      images = images.filter(i => (images.length === 1) || !(i === this._lastWildcard));
+      const image = images[Math.floor(Math.random() * images.length)];
+      tokenData.img = this._lastWildcard = image;
     }
 
     // Merge Token data with the default for the Actor
@@ -323,7 +336,7 @@ async function CreateActorWithType(event, data, tokenImageData, type) {
 }
 
 function CreateImgData(event, response) {
-    var data = { 
+    var data = {
         img: response.path
     };
 
