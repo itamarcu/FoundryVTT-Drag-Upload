@@ -1,11 +1,11 @@
 {
   "name": "dragupload",
-  "title": "Drag Upload (Get Over Here!)",
+  "title": "Drag Upload (special version xin)",
   "description": "Adds the ability to drag files onto Foundry to automatically create Tokens, Tiles, Journal Pins, and Ambient Audio",
   "version": "1.4.1999",
   "minimumCoreVersion": "0.6.2",
   "compatibleCoreVersion": "0.7.2",
-  "author": "Cody Swendrowski <cody@swendrowski.us>",
+  "author": "Cody Swendrowski <cody@swendrowski.us> + shem",
   "esmodules": [
     "./dragupload.js"
   ],
@@ -15,7 +15,7 @@
   ],
   "languages": [
   ],
-  "url": "https://github.com/cswendrowski/FoundryVTT-Drag-Upload",
-  "manifest": "https://github.com/cswendrowski/FoundryVTT-Drag-Upload/releases/download/latest/module.json",
-  "download": "https://github.com/cswendrowski/FoundryVTT-Drag-Upload/releases/download/1.4.1/module.zip"
+  "url": "https://github.com/itamarcu/FoundryVTT-Drag-Upload",
+  "manifest": "https://github.com/itamarcu/FoundryVTT-Drag-Upload/raw/master/module.json",
+  "download": "https://github.com/itamarcu/FoundryVTT-Drag-Upload/archive/master.zip"
 }
