@@ -5,7 +5,7 @@
   "version": "1.5.3-1",
   "minimumCoreVersion": "0.6.2",
   "compatibleCoreVersion": "0.7.8",
-  "author": "Cody Swendrowski <cody@swendrowski.us>",
+  "author": "Cody Swendrowski <cody@swendrowski.us> + shem",
   "esmodules": [
     "./dragupload.js"
   ],
