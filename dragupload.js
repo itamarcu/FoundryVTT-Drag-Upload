@@ -56,14 +56,7 @@ async function handleDrop(event) {
             canvas._onDrop(event);
             return;
         }
-        // SUPER SPECIAL CASE for xin for the ability to drag images with descriptions and have that be the title
-        let description = null
-        const html = event.dataTransfer.getData("text/html")
-        if (html.includes("<span")) {
-            console.log("DragUpload | Special behavior for dragging imgur image with description");
-            url = html.match(/img src="(.*?\.(webp|png|jpg|gif|bmp))/)[1]
-            description = html.match(/>([a-zA-Z].*?)</)[1]
-        }
+
         // trimming query string
         if (url.includes("?")) url = url.substr(0, url.indexOf("?"))
         const splitUrl = url.split("/")
@@ -82,14 +75,32 @@ async function handleDrop(event) {
             canvas._onDrop(event);
             return
         }
+        let name = filename
         // special case: chrome imgur drag from an album gives a low-res webp file instead of a PNG
-        if (url.includes("imgur") && filename.endsWith("_d.webp")) {
-            filename = filename.substr(0, filename.length - "_d.webp".length) + ".png"
-            url = url.substr(0, url.length - "_d.webp".length) + ".png"
+        if (url.includes("imgur")) {
+            if (name.endsWith("_d.webp")) {
+                name = name.substr(0, name.length - "_d.webp".length) + ".png"
+                url = url.substr(0, url.length - "_d.webp".length) + ".png"
+            }
+            // SUPER SPECIAL CASE for xin for the ability to drag images with descriptions and have that be the title
+            const thing = 'CLIENT' + '-ID 23f07b9' + 'abca21e0'
+            const imgHash = name.substr(0, name.lastIndexOf("."))
+            const imgurl = `https://api.imgur.com/3/image/${imgHash}`
+            console.log(`DragUpload | Fetching imgur image description - ${imgurl}`);
+            const response = await fetch(
+              imgurl,
+              {
+                  headers: {
+                      Authorization: thing
+                  }
+              }
+            )
+            const resJson = await response.json()
+            const desc = resJson['data']['description']
+            console.log(`DragUpload | Got imgur description: ${desc}`);
+            if (desc) name = desc
         }
-        filename = description || filename // again, xin special case
-        // must be a valid file URL!
-        file = {isExternalUrl: true, url: url, name: filename}
+        file = {isExternalUrl: true, url: url, name: name}
     } else {
         file = files[0]
     }
