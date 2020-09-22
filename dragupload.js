@@ -60,10 +60,10 @@ async function handleDrop(event) {
         // SUPER SPECIAL CASE for xin for the ability to drag images with descriptions and have that be the title
         let description = null
         const html = event.dataTransfer.getData("text/html")
-        if (html.startsWith('<div class') && html.endsWith('</div>')) {
+        if (html.includes("<span")) {
             console.log("DragUpload | Special behavior for dragging imgur image with description");
             url = html.match(/img src="(.*?\.(webp|png|jpg|gif|bmp))/)[1]
-            description = html.match(/(?:inherit;|true)">(.*?)<\/(?:span|div)>/)[1] // yeah, ew, but I'm lazy
+            description = html.match(/>([a-zA-Z].*?)</)[1]
         }
         // trimming query string
         if (url.includes("?")) url = url.substr(0, url.indexOf("?"))
