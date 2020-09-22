@@ -63,10 +63,6 @@ async function handleDrop(event) {
         if (html.startsWith('<div class') && html.endsWith('</div>')) {
             console.log("DragUpload | Special behavior for dragging imgur image with description");
             url = html.match(/img src="(.*?\.(webp|png|jpg|gif|bmp))/)[1]
-            // // low-res webp file instead of a PNG
-            // if (url.endsWith("_d.webp")) {
-            //     url = url.substr(0, url.length - "_d.webp".length) + ".png"
-            // }
             description = html.match(/inherit;">(.*?)<\/span>/)[1]
         }
         // trimming query string
