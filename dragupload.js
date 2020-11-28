@@ -253,7 +253,8 @@ async function CreateActor(event, file) {
     data.name = file.name;
     var tokenData = CreateImgData(event, response);
 
-    if (IMAGE_FILE_EXTENSIONS.filter(x => file.name.endsWith(x)).length == 0) {
+    const fileWithExtension = file.url || file.name
+    if (IMAGE_FILE_EXTENSIONS.filter(x => fileWithExtension.endsWith(x)).length === 0) {
         data.img = "";
     }
 

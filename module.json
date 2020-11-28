@@ -2,9 +2,9 @@
   "name": "dragupload",
   "title": "Drag Upload (special version xin)",
   "description": "Adds the ability to drag files onto Foundry to automatically create Tokens, Tiles, Journal Pins, and Ambient Audio",
-  "version": "2.99",
+  "version": "2.999",
   "minimumCoreVersion": "0.6.2",
-  "compatibleCoreVersion": "0.7.2",
+  "compatibleCoreVersion": "0.7.7",
   "author": "Cody Swendrowski <cody@swendrowski.us> + shem",
   "esmodules": [
     "./dragupload.js"
