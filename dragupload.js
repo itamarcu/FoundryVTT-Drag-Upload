@@ -83,23 +83,24 @@ async function handleDrop(event) {
                 name = name.substr(0, name.length - "_d.webp".length) + ".png"
                 url = url.substr(0, url.length - "_d.webp".length) + ".png"
             }
-            // SUPER SPECIAL CASE for xin for the ability to drag images with descriptions and have that be the title
-            const thing = 'CLIENT' + '-ID 23f07b9' + 'abca21e0'
-            const imgHash = name.substr(0, name.lastIndexOf("."))
-            const imgurl = `https://api.imgur.com/3/image/${imgHash}`
-            console.log(`DragUpload | Fetching imgur image description - ${imgurl}`);
-            const response = await fetch(
-              imgurl,
-              {
-                  headers: {
-                      Authorization: thing
-                  }
-              }
-            )
-            const resJson = await response.json()
-            const desc = resJson['data']['description']
-            console.log(`DragUpload | Got imgur description: ${desc}`);
-            if (desc) name = desc
+            // commenting this out because this api call now fails (probably token/api stopped working) but I want to keep it for the future
+//             // SUPER SPECIAL CASE for xin for the ability to drag images with descriptions and have that be the title
+//             const thing = 'CLIENT' + '-ID 23f07b9' + 'abca21e0'
+//             const imgHash = name.substr(0, name.lastIndexOf("."))
+//             const imgurl = `https://api.imgur.com/3/image/${imgHash}`
+//             console.log(`DragUpload | Fetching imgur image description - ${imgurl}`);
+//             const response = await fetch(
+//               imgurl,
+//               {
+//                   headers: {
+//                       Authorization: thing
+//                   }
+//               }
+//             )
+//             const resJson = await response.json()
+//             const desc = resJson['data']['description']
+//             console.log(`DragUpload | Got imgur description: ${desc}`);
+//             if (desc) name = desc
         }
         file = {isExternalUrl: true, url: url, name: name}
     } else {
